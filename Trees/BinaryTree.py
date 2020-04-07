@@ -154,10 +154,10 @@ class BinaryTree():
         Implement this function by modifying the _print functions above.
         '''
         if start:
-            traversal = self.inorder(self.left, traversal)
+            traversal = self.inorder(start.left, traversal)
             traversal.append(start.value)
-            traversal = self.inorder(self.right, traversal)
-        return Traversal 
+            traversal = self.inorder(start.right, traversal)
+        return traversal 
 
     def postorder(self, start, traversal):
         '''
@@ -211,7 +211,7 @@ class BinaryTree():
         '''
         if node is None:
             return 0
-        return 1 + self.size_recursive(node.left) + self.size_recursive(node.right)
+        return 1 + self.size_(node.left) + self.size_(node.right)
 
     def height(self):
         return BinaryTree._height(self.root)
