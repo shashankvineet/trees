@@ -186,6 +186,22 @@ class BinaryTree():
         Implement this function. 
         The lecture notes videos provide the exact code you need.
         '''
+        if self.root is None:
+            return 0
+
+        stack = []
+        stack.append(self.root)
+
+        size = 1
+        while stack:
+            node = stack.pop()
+            if node.left:
+                size += 1
+                stack.append(node.left)
+            if node.right:
+                size += 1
+                stack.append(node.right)
+        return size
 
     def size_(self, node):
         '''
@@ -193,6 +209,9 @@ class BinaryTree():
         Implement this function.
         The lecture notes videos provide the exact code you need.
         '''
+        if node is None:
+            return 0
+        return 1 + self.size_recursive(node.left) + self.size_recursive(node.right)
 
     def height(self):
         return BinaryTree._height(self.root)
@@ -209,3 +228,9 @@ class BinaryTree():
         This makes it inconvenient to use,
         and so you should implement it as a static method.
         '''
+        if node is None:
+            return -1
+        left_height = BinaryTree._height(node.left)
+        right_height = BinaryTree._height(node.right)
+
+        return 1 + max(left_height, right_height)
