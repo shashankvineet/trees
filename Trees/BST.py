@@ -185,7 +185,7 @@ class BST(BinaryTree):
         '''
 
         if self.root:
-            return BST._find_largest(self.right)
+            return BST._find_largest(self.root)
         return None
 
     @staticmethod
