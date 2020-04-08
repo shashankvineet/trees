@@ -219,23 +219,26 @@ class BST(BinaryTree):
     def _remove(node, value):
         if not node:
             return node
+
         if node.value > value:
-            node.left = BST._remove(node.left, value)
+            node.left=BST._remove(node.left, value)
+
         elif node.value < value:
             node.right = BST._remove(node.right, value)
         else:
             if not node.right:
-                return node.right
-
-            if not node.left:
                 return node.left
 
-            temp = node.right
-            while temp.left:
-                temp = temp.left
+            if not node.left:
+                return node.right
 
-            node.value = temp.value
+            tmp = node.right
+            while tmp.left:
+                tmp = tmp.left
+
+            node.value = tmp.value
             node.right = BST._remove(node.right, node.value)
+
         return node
 
     def remove_list(self, xs):
