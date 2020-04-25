@@ -188,3 +188,92 @@ class Heap(BinaryTree):
         else:
             return Heap._replace(self.root)
 
+
+    @staticmethod
+    def _last_val(node):
+
+        if node.right is None and node.left is None:
+            val = node.value
+            return val
+        elif node.right is None:
+            val = node.left.value
+            return val
+        else:
+            left = Heap.size(node.left)
+            right = Heap.size(node.right)
+
+            if left > right:
+                return Heap._last_val(node.left)
+            else:
+                return Heap._last_val(node.right)
+
+    @staticmethod
+    def _alt_solution(node):
+        if node.left is None or node.right is None:
+            pass
+        elif node.left.value == "alt method":
+            node.left = None
+        elif node.right.value == "alt method":
+            node.right = None
+        else:
+            left = Heap.size(node.left)
+            right = Heap.size(node.right)
+            if left > right:
+                return Heap._alt_solution(node.left)
+            else:
+                return Heap._alt_solution(node.right)
+
+    @staticmethod
+    def _find_last_val(node):
+        if node.right is None and node.left is None:
+            node.value = "alt method"
+            return node
+        elif node.right is None:
+            node.left = None
+            return node
+        else:
+            left = Heap.size(node.left)
+            right = Heap.size(node.right)
+            if left > right:
+                return Heap._find_last_val(node.left)
+            else:
+                return Heap._find_last_val(node.right)
+
+
+    @staticmethod
+    def _replace(node):
+        val = Heap._last_val(node)
+        Heap._find_last_val(node)
+        node.value = val
+        Heap._alt_solution(node)
+        Heap._trickle_down(node.value, node)
+
+        return node
+
+    @staticmethod
+    def _trickle_down(value, node):
+        if Heap._is_heap_satisfied(node):
+            return
+        else:
+            if node.right is None and node.left is None:
+                return node
+            elif node.right is None:
+                if node.value <= node.left.value:
+                    return node
+                else:
+                    tmp_node = node.value
+                    node.value = node.left.value
+                    node.left.value = tmp_node
+
+            else:
+                if node.left.value < node.right.value:
+                    tmp_node = node.value
+                    node.value = node.left.value
+                    node.left.value = tmp_node
+                    return Heap._trickle_down(value, node.left)
+
+                else:
+                    tmp_node = node.value
+                    node.value = node.right.value
+                    node.right.value = tmp_node
+                    return Heap._trickle_down(value, node.right)
