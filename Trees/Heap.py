@@ -3,7 +3,7 @@
 
 from Trees.BinaryTree import BinaryTree, Node
 
-class Heap():
+class Heap(BinaryTree):
     '''
     FIXME:
     Heap is currently not a subclass of BinaryTree.
@@ -17,6 +17,10 @@ class Heap():
         If xs is a list (i.e. xs is not None),
         then each element of xs needs to be inserted into the Heap.
         '''
+
+        self.root = None
+        if xs:
+            self.insert_list(xs)
 
 
     def __repr__(self):
@@ -56,6 +60,14 @@ class Heap():
         The lecture videos have the exact code you need,
         except that their method is an instance method when it should have been a static method.
         '''
+        if node is None or (node.left is None and node.right is None):
+            return True
+        elif node.right is None:
+            return node.value <= node.left.value
+        elif node.left <= node.left.value and node.value <= node.right.value:
+            return Heap._is_heap_satisfied(node.left) and Heap._is_heap_satisfied(node.right)
+        else:
+            return False
 
 
     def insert(self, value):
@@ -75,6 +87,53 @@ class Heap():
         FIXME:
         Implement this function.
         '''
+        Heap._input(value, node)
+
+
+    @staticmethod
+    def size(node):
+
+        if node is None:
+            return 0
+        stack=[]
+        stack.append(node)
+        size=1
+        while stack:
+            node=stack.pop()
+            if node.left:
+                size+=1
+                stack.append(node.left)
+            if node.right:
+                size+=1
+                stack.append(node.right)
+        return size
+
+    @staticmethod
+    def _input(value, node):
+        '''
+        FIXME:
+        Implement this function.
+        '''
+        if node.left is None:
+            new_node = Node(value)
+            node.left = new_node
+
+        elif node.right is None:
+            new_node = Node(value)
+            node.right = new_node
+
+        else:
+            left = Heap.size(node.left)
+            right = Heap.size(node.right)
+            new_node = node.left if left <= right else node.right
+            new_node = Heap._input(value, new_node)
+
+        if new_node.value < node.value:
+            tmp = new_node.value
+            new_node.value = node.value
+            node.value = tmp
+
+        return node
 
 
     def insert_list(self, xs):
@@ -84,6 +143,9 @@ class Heap():
         FIXME:
         Implement this function.
         '''
+
+        for x in xs:
+            self.insert(x)
 
 
     def find_smallest(self):
@@ -99,6 +161,15 @@ class Heap():
         Create a recursive staticmethod helper function,
         similar to how the insert and find functions have recursive helpers.
         '''
+        return Heap._find_smallest(self.root)
+
+
+    @staticmethod
+    def _find_smallest(node):
+        if node is None:
+            return
+        else:
+            return node.value
 
 
     def remove_min(self):
@@ -109,3 +180,11 @@ class Heap():
         FIXME:
         Implement this function.
         '''
+
+        if self.root is None or (self.root.left is None and self.root.right is None):
+            self.root = None
+            return self.root
+
+        else:
+            return Heap._replace(self.root)
+
