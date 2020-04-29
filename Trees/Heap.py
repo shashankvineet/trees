@@ -62,10 +62,13 @@ class Heap(BinaryTree):
         '''
         if node is None or (node.left is None and node.right is None):
             return True
+
         elif node.right is None:
             return node.value <= node.left.value
-        elif node.left <= node.left.value and node.value <= node.right.value:
+
+        elif node.value <= node.left.value and node.value <= node.right.value:
             return Heap._is_heap_satisfied(node.left) and Heap._is_heap_satisfied(node.right)
+
         else:
             return False
 
@@ -161,8 +164,8 @@ class Heap(BinaryTree):
         Create a recursive staticmethod helper function,
         similar to how the insert and find functions have recursive helpers.
         '''
-        return Heap._find_smallest(self.root)
-
+        if Heap.is_heap_satisfied(self):
+            return self.root.value
 
     @staticmethod
     def _find_smallest(node):
